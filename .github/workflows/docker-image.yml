@@ -1,0 +1,21 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: |
+        echo "${{ secrets.DOCKERPW }}" | docker login -u "danleeca" --password-stdin
+        docker image build -t danleeca/docker-nginx:alpine .
+        docker push danleeca/docker-nginx:alpine
